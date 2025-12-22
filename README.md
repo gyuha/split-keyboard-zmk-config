@@ -28,7 +28,7 @@ Rows:
    ROW3: Pin 14
    ROW4: Pin 16
 
-Left Columns (COL0~6):
+Left Columns (COL0~6, 7개):
    COL0: Pin 2
    COL1: Pin 3
    COL2: Pin 4
@@ -37,7 +37,7 @@ Left Columns (COL0~6):
    COL5: Pin 7
    COL6: Pin 8
 
-Right Columns (COL7~15):
+Right Columns (COL7~15, 9개):
    COL7: Pin 2
    COL8: Pin 3
    COL9: Pin 4
@@ -217,6 +217,41 @@ zmk-config/
 2. **배터리 극성**: + (RAW), - (GND) 확인 필수
 3. **첫 페어링**: 양쪽 보드가 모두 켜진 상태에서 진행
 4. **유휴 타임아웃**: 15분 후 슬립 모드 (키 입력 시 즉시 복구)
+
+## 🔧 빌드 문제 해결
+
+### 최근 수정 내역 (2024)
+
+이 프로젝트는 다음 빌드 오류들을 수정했습니다:
+
+1. **Devicetree 구문 오류**
+   - `kscan0` 노드가 root 노드 외부에 정의되어 있던 문제 해결
+   - `zmk,matrix-transform` chosen 참조 추가
+
+2. **Kconfig 경고**
+   - `ZMK_SPLIT_ROLE_PERIPHERAL`/`CENTRAL`의 중복 정의 제거
+   - 역할 설정은 이제 `.conf` 파일에서만 관리
+
+3. **매트릭스 매핑**
+   - 왼쪽/오른쪽 컬럼 주석을 실제 매트릭스와 일치하도록 수정
+   - col-offset 값 검증 완료
+
+### 빌드 실패 시
+
+빌드가 실패하면 다음을 확인하세요:
+
+1. **GitHub Actions 로그 확인**
+   - Actions 탭 → 실패한 워크플로 클릭
+   - 상세 에러 메시지 확인
+
+2. **일반적인 문제**
+   - 키맵 파일의 괄호/세미콜론 누락
+   - 잘못된 키코드 사용
+   - devicetree 구문 오류
+
+3. **ZMK 버전**
+   - 이 설정은 ZMK v3.5.0 기준으로 작성됨
+   - `build.yaml`에서 버전 확인 가능
 
 ## 📝 라이선스
 
