@@ -10,4 +10,13 @@ if SHIELD_GKEY_LEFT || SHIELD_GKEY_RIGHT
 config ZMK_SPLIT
     default y
 
+config USB_DEVICE_STACK
+    default y
+
+config USB_DEVICE_PRODUCT
+    default "GKey Split Keyboard"
+
+config USB_DEVICE_MANUFACTURER
+    default "Custom"
+
 endif
