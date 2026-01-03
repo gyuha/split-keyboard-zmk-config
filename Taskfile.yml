@@ -3,6 +3,7 @@ version: '3'
 vars:
   BOARD: nice_nano_v2
   BUILD_DIR: "{{.ROOT_DIR}}/build"
+  DIST_DIR: "{{.ROOT_DIR}}/dist"
   ZMK_APP: "{{.ROOT_DIR}}/zmk/app"
   WEST: python3 -m west
   TOOLCHAIN_PATH:
@@ -52,11 +53,20 @@ tasks:
     deps:
       - build:left
       - build:right
+      - dist
+
+  dist:
+    desc: Copy firmware to dist folder
+    cmds:
+      - mkdir -p {{.DIST_DIR}}
+      - cp {{.BUILD_DIR}}/left/zephyr/zmk.uf2 {{.DIST_DIR}}/gkey_left-{{.BOARD}}-zmk.uf2
+      - cp {{.BUILD_DIR}}/right/zephyr/zmk.uf2 {{.DIST_DIR}}/gkey_right-{{.BOARD}}-zmk.uf2
 
   clean:
-    desc: Clean build directories
+    desc: Clean build and dist directories
     cmds:
       - rm -rf {{.BUILD_DIR}}
+      - rm -rf {{.DIST_DIR}}
 
   clean:left:
     desc: Clean left board build directory

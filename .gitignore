@@ -1,6 +1,7 @@
 .task
 .west
 build/
+dist/
 zephyr/
 zmk/
 modules/
