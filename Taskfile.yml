@@ -21,6 +21,7 @@ tasks:
   init:
     desc: Initialize West workspace
     cmds:
+      - brew install cmake ninja || true
       - brew install --cask gcc-arm-embedded || true
       - pip3 install west
       - "{{.WEST}} init -l config/ || true"
