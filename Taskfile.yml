@@ -5,6 +5,12 @@ vars:
   BUILD_DIR: "{{.ROOT_DIR}}/build"
   ZMK_APP: "{{.ROOT_DIR}}/zmk/app"
   WEST: python3 -m west
+  TOOLCHAIN_PATH:
+    sh: ls -d /Applications/ArmGNUToolchain/*/arm-none-eabi 2>/dev/null | head -1 || echo ""
+
+env:
+  ZEPHYR_TOOLCHAIN_VARIANT: gnuarmemb
+  GNUARMEMB_TOOLCHAIN_PATH: "{{.TOOLCHAIN_PATH}}"
 
 tasks:
   default:
@@ -15,6 +21,7 @@ tasks:
   init:
     desc: Initialize West workspace
     cmds:
+      - brew install --cask gcc-arm-embedded || true
       - pip3 install west
       - "{{.WEST}} init -l config/ || true"
       - "{{.WEST}} update"
