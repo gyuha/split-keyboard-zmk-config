@@ -1,0 +1,78 @@
+version: '3'
+
+vars:
+  BOARD: nice_nano_v2
+  BUILD_DIR: build
+  WEST: python3 -m west
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  init:
+    desc: Initialize West workspace
+    cmds:
+      - pip3 install west
+      - "{{.WEST}} init -l config/"
+      - "{{.WEST}} update"
+      - "{{.WEST}} zephyr-export"
+      - pip3 install -r zephyr/scripts/requirements.txt
+
+  build:left:
+    desc: Build left board firmware
+    cmds:
+      - "{{.WEST}} build -p -d {{.BUILD_DIR}}/left -b {{.BOARD}} -- -DSHIELD=gkey_left"
+    sources:
+      - config/**/*
+    generates:
+      - "{{.BUILD_DIR}}/left/zephyr/zmk.uf2"
+
+  build:right:
+    desc: Build right board firmware
+    cmds:
+      - "{{.WEST}} build -p -d {{.BUILD_DIR}}/right -b {{.BOARD}} -- -DSHIELD=gkey_right"
+    sources:
+      - config/**/*
+    generates:
+      - "{{.BUILD_DIR}}/right/zephyr/zmk.uf2"
+
+  build:all:
+    desc: Build both left and right board firmware
+    deps:
+      - build:left
+      - build:right
+
+  clean:
+    desc: Clean build directories
+    cmds:
+      - rm -rf {{.BUILD_DIR}}
+
+  clean:left:
+    desc: Clean left board build directory
+    cmds:
+      - rm -rf {{.BUILD_DIR}}/left
+
+  clean:right:
+    desc: Clean right board build directory
+    cmds:
+      - rm -rf {{.BUILD_DIR}}/right
+
+  rebuild:left:
+    desc: Clean and rebuild left board
+    cmds:
+      - task: clean:left
+      - task: build:left
+
+  rebuild:right:
+    desc: Clean and rebuild right board
+    cmds:
+      - task: clean:right
+      - task: build:right
+
+  rebuild:all:
+    desc: Clean and rebuild both boards
+    cmds:
+      - task: clean
+      - task: build:all

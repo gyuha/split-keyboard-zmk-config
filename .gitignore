@@ -1,0 +1,6 @@
+.task
+.west
+./build
+./zephyr
+./zmk
+./modules

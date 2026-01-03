@@ -100,14 +100,41 @@ Right Columns (COL7~15, 9개):
 
 ### 로컬 빌드 (선택사항)
 
-<details>
-<summary>로컬 환경에서 빌드하기</summary>
+#### Taskfile 사용 (권장)
+
+[Task](https://taskfile.dev/)를 사용하면 간편하게 빌드할 수 있습니다.
 
 **필요 도구:**
-- Python 3
-- CMake
-- Ninja
-- West
+- [Task](https://taskfile.dev/installation/) - 태스크 러너
+- Python 3, CMake, Ninja, West
+
+**사용 가능한 명령어:**
+
+| 명령어 | 설명 |
+|--------|------|
+| `task init` | West 워크스페이스 초기화 (최초 1회) |
+| `task build:left` | 왼쪽 보드 펌웨어 빌드 |
+| `task build:right` | 오른쪽 보드 펌웨어 빌드 |
+| `task build:all` | 양쪽 보드 동시 빌드 |
+| `task clean` | 빌드 디렉토리 삭제 |
+| `task rebuild:all` | 클린 후 전체 재빌드 |
+
+**빌드 순서:**
+```bash
+# 1. 초기화 (최초 1회만 실행)
+task init
+
+# 2. 펌웨어 빌드
+task build:all      # 양쪽 보드 모두 빌드
+# 또는
+task build:left     # 왼쪽만 빌드
+task build:right    # 오른쪽만 빌드
+```
+
+펌웨어 위치: `build/left/zephyr/zmk.uf2`, `build/right/zephyr/zmk.uf2`
+
+<details>
+<summary>수동으로 빌드하기 (Taskfile 없이)</summary>
 
 **빌드 실행:**
 ```bash
@@ -185,6 +212,7 @@ zmk-config/
 │       ├── Kconfig.shield             # Shield 정의
 │       └── Kconfig.defconfig          # 기본 config
 ├── build.yaml                         # GitHub Actions 빌드 설정
+├── Taskfile.yml                       # 로컬 빌드 태스크 정의
 └── README.md
 ```
 

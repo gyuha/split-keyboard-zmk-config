@@ -1,5 +1,7 @@
 name: Build ZMK firmware
-on: [push, pull_request, workflow_dispatch]
+# NOTE: push trigger temporarily disabled
+# on: [push, pull_request, workflow_dispatch]
+on: [workflow_dispatch]
 
 jobs:
   build:
