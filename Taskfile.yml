@@ -50,10 +50,10 @@ tasks:
 
   build:all:
     desc: Build both left and right board firmware
-    deps:
-      - build:left
-      - build:right
-      - dist
+    cmds:
+      - task: build:left
+      - task: build:right
+      - task: dist
 
   dist:
     desc: Copy firmware to dist folder
