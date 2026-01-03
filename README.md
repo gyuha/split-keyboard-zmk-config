@@ -141,8 +141,6 @@ task build:right    # 오른쪽만 빌드
 # West 초기화
 west init -l config/
 west update
-west zephyr-export
-pip3 install -r zephyr/scripts/requirements.txt
 
 # 왼쪽 보드
 west build -p -d build/left -b nice_nano_v2 -- -DSHIELD=gkey_left

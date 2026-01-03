@@ -2,7 +2,8 @@ version: '3'
 
 vars:
   BOARD: nice_nano_v2
-  BUILD_DIR: build
+  BUILD_DIR: "{{.ROOT_DIR}}/build"
+  ZMK_APP: "{{.ROOT_DIR}}/zmk/app"
   WEST: python3 -m west
 
 tasks:
@@ -15,26 +16,26 @@ tasks:
     desc: Initialize West workspace
     cmds:
       - pip3 install west
-      - "{{.WEST}} init -l config/"
+      - "{{.WEST}} init -l config/ || true"
       - "{{.WEST}} update"
-      - "{{.WEST}} zephyr-export"
-      - pip3 install -r zephyr/scripts/requirements.txt
 
   build:left:
     desc: Build left board firmware
+    dir: "{{.ZMK_APP}}"
     cmds:
-      - "{{.WEST}} build -p -d {{.BUILD_DIR}}/left -b {{.BOARD}} -- -DSHIELD=gkey_left"
+      - "{{.WEST}} build -p -d {{.BUILD_DIR}}/left -b {{.BOARD}} -- -DSHIELD=gkey_left -DZMK_CONFIG={{.ROOT_DIR}}/config"
     sources:
-      - config/**/*
+      - "{{.ROOT_DIR}}/config/**/*"
     generates:
       - "{{.BUILD_DIR}}/left/zephyr/zmk.uf2"
 
   build:right:
     desc: Build right board firmware
+    dir: "{{.ZMK_APP}}"
     cmds:
-      - "{{.WEST}} build -p -d {{.BUILD_DIR}}/right -b {{.BOARD}} -- -DSHIELD=gkey_right"
+      - "{{.WEST}} build -p -d {{.BUILD_DIR}}/right -b {{.BOARD}} -- -DSHIELD=gkey_right -DZMK_CONFIG={{.ROOT_DIR}}/config"
     sources:
-      - config/**/*
+      - "{{.ROOT_DIR}}/config/**/*"
     generates:
       - "{{.BUILD_DIR}}/right/zephyr/zmk.uf2"
 
